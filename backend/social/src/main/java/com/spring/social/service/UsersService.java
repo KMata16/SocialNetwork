@@ -48,4 +48,39 @@ public class UsersService {
             return foundUser;
         }
     }
+
+    // add profile management
+
+    public Integer updateUsername(int accountId, Users user) {
+        Users userFound = userRepository.findByAccountId(accountId);
+        if (userFound == null) {
+            return 0;
+        } else {
+            userFound.setUsername(user.getUsername());
+            userRepository.save(userFound);
+            return 1;
+        }
+    }
+
+    public Integer updateEmail(int user_id, Users user) {
+        Users userFound = userRepository.findByAccountId(user_id);
+        if (userFound == null) {
+            return 0;
+        } else {
+            userFound.setEmail(user.getEmail());
+            userRepository.save(userFound);
+            return 1;
+        }
+    }
+
+    public Integer updatePassword(int user_id, Users user) {
+        Users userFound = userRepository.findByAccountId(user_id);
+        if (userFound == null) {
+            return 0;
+        } else {
+            userFound.setPassword(user.getPassword());
+            userRepository.save(userFound);
+            return 1;
+        }
+    }
 }

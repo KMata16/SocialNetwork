@@ -39,7 +39,7 @@ public class LikesController {
     public @ResponseBody ResponseEntity<Likes> getLike(@PathVariable int post_id) {
         Likes likeFound = likesService.getLikeByPostId(post_id);
         if (likeFound == null) {
-            return ResponseEntity.status(400).body(null);
+            return ResponseEntity.ok(null);
         } else {
             return ResponseEntity.ok(likeFound);
         }

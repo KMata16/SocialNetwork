@@ -76,6 +76,38 @@ public class SocialMediaController {
         }
     }
 
+    // add profile management
+
+    @PutMapping("/users/{user_id}/username")
+    public @ResponseBody ResponseEntity<Integer> updateUsername(@PathVariable int user_id, @RequestBody Users user) {
+        Integer updatedUser = usersService.updateUsername(user_id, user);
+        if (updatedUser == 0) {
+            return ResponseEntity.ok(0);
+        } else {
+            return ResponseEntity.ok(1);
+        }
+    }
+
+    @PutMapping("/users/{user_id}/email")
+    public @ResponseBody ResponseEntity<Integer> updateEmail(@PathVariable int user_id, @RequestBody Users user) {
+        Integer updatedUser = usersService.updateEmail(user_id, user);
+        if (updatedUser == 0) {
+            return ResponseEntity.ok(0);
+        } else {
+            return ResponseEntity.ok(1);
+        }
+    }
+
+    @PutMapping("/users/{user_id}/password")
+    public @ResponseBody ResponseEntity<Integer> updatePaaword(@PathVariable int user_id, @RequestBody Users user) {
+        Integer updatedUser = usersService.updatePassword(user_id, user);
+        if (updatedUser == 0) {
+            return ResponseEntity.ok(0);
+        } else {
+            return ResponseEntity.ok(1);
+        }
+    }
+
     @GetMapping("/users/{user_id}/following")
     public @ResponseBody ResponseEntity<List<Followers>> getAllFollowing(@PathVariable int user_id) {
         List<Followers> followingList = followersService.getAllFollowing(user_id);
