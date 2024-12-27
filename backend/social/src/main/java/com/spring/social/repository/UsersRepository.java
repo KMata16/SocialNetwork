@@ -1,7 +1,5 @@
 package com.spring.social.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +16,5 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     Users findByAccountId(Integer accountId);
 
-    Optional<Users> findByUsername(String username);
+    Users findByUsername(String username);
 }

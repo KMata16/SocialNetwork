@@ -13,7 +13,7 @@ import com.spring.social.service.LikesService;
 import com.spring.social.service.PostsService;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 public class LikesController {
 
     LikesService likesService;

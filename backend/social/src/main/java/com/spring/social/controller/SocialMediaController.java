@@ -6,14 +6,15 @@ import com.spring.social.service.CommentsService;
 import com.spring.social.service.FollowersService;
 import com.spring.social.service.UsersService;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 public class SocialMediaController {
 
     UsersService usersService;
@@ -38,13 +39,29 @@ public class SocialMediaController {
     }
 
     @PostMapping("/login")
-    public @ResponseBody ResponseEntity<Users> loginUser(@RequestBody Users user) {
+    public @ResponseBody ResponseEntity<Users> loginUser(@RequestBody Users user, HttpSession session) {
         Users userAuthenticated = usersService.loginUser(user);
         if (userAuthenticated == null) {
             return ResponseEntity.status(401).body(null);
         } else {
+            session.setAttribute("user", userAuthenticated);
             return ResponseEntity.ok(userAuthenticated);
         }
+    }
+
+    @GetMapping("/session")
+    public @ResponseBody ResponseEntity<Users> getSession(HttpSession session) {
+        Users user = (Users) session.getAttribute("user");
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/invalidate")
+    public void invalidateSession(HttpSession session) {
+        session.invalidate();
     }
 
     @GetMapping("/users/{user_id}")
@@ -78,9 +95,10 @@ public class SocialMediaController {
 
     // add profile management
 
-    @PutMapping("/users/{user_id}/username")
-    public @ResponseBody ResponseEntity<Integer> updateUsername(@PathVariable int user_id, @RequestBody Users user) {
-        Integer updatedUser = usersService.updateUsername(user_id, user);
+    @PutMapping("/users/{userId}/username")
+    public @ResponseBody ResponseEntity<Integer> updateUsername(@PathVariable int userId,
+            @RequestBody Users user) {
+        Integer updatedUser = usersService.updateUsername(userId, user);
         if (updatedUser == 0) {
             return ResponseEntity.ok(0);
         } else {
@@ -88,9 +106,9 @@ public class SocialMediaController {
         }
     }
 
-    @PutMapping("/users/{user_id}/email")
-    public @ResponseBody ResponseEntity<Integer> updateEmail(@PathVariable int user_id, @RequestBody Users user) {
-        Integer updatedUser = usersService.updateEmail(user_id, user);
+    @PutMapping("/users/{userId}/email")
+    public @ResponseBody ResponseEntity<Integer> updateEmail(@PathVariable int userId, @RequestBody Users user) {
+        Integer updatedUser = usersService.updateEmail(userId, user);
         if (updatedUser == 0) {
             return ResponseEntity.ok(0);
         } else {
@@ -98,9 +116,9 @@ public class SocialMediaController {
         }
     }
 
-    @PutMapping("/users/{user_id}/password")
-    public @ResponseBody ResponseEntity<Integer> updatePaaword(@PathVariable int user_id, @RequestBody Users user) {
-        Integer updatedUser = usersService.updatePassword(user_id, user);
+    @PutMapping("/users/{userId}/password")
+    public @ResponseBody ResponseEntity<Integer> updatePaaword(@PathVariable int userId, @RequestBody Users user) {
+        Integer updatedUser = usersService.updatePassword(userId, user);
         if (updatedUser == 0) {
             return ResponseEntity.ok(0);
         } else {

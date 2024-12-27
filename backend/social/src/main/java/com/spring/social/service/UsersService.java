@@ -49,8 +49,6 @@ public class UsersService {
         }
     }
 
-    // add profile management
-
     public Integer updateUsername(int accountId, Users user) {
         Users userFound = userRepository.findByAccountId(accountId);
         if (userFound == null) {

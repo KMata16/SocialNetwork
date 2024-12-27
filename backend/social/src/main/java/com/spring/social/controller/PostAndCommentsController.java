@@ -20,7 +20,7 @@ import com.spring.social.service.PostsService;
 import com.spring.social.service.UsersService;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin(origins = "http://localhost:3000/", allowCredentials = "true")
 public class PostAndCommentsController {
 
     PostsService postsService;

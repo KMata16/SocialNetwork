@@ -1,10 +1,31 @@
 import axios from "axios";
-import { useContext, useState } from "react";
-import { MyContext } from "../App";
+import { useContext, useState, useEffect } from "react";
+// import { MyContext } from "../App";
 
 const UserProfile = () => {
 
-    const [contextValue] = useContext(MyContext)
+    const [activeUser, setActiveUser] = useState({
+        username: "",
+        accountId: 0,
+        password: "",
+        email: ""
+    });
+
+    axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/session")
+            .then(res => {
+                setActiveUser({
+                    ...activeUser, username: res.data.username, accountId: res.data.accountId,
+                    password: res.data.password, email: res.data.email
+                })
+            })
+    }, [])
+
+    // console.log(activeUser)
+
+    // const [contextValue] = useContext(MyContext)
 
     const [username, setUsername] = useState("");
 
@@ -14,21 +35,21 @@ const UserProfile = () => {
 
     function handleSubmitUsername(event) {
         event.preventDefault()
-        axios.put(`http://localhost:8080/users/${contextValue.accountId}/username`, {
+        axios.put(`http://localhost:8080/users/${activeUser.accountId}/username`, {
             "username": username
         })
     }
 
     function handleSubmitEmail(event) {
         event.preventDefault()
-        axios.put(`http://localhost:8080/users/${contextValue.accountId}/email`, {
+        axios.put(`http://localhost:8080/users/${activeUser.accountId}/email`, {
             "email": email
         })
     }
 
     function handleSubmitPassword(event) {
         event.preventDefault()
-        axios.put(`http://localhost:8080/users/${contextValue.accountId}/password`, {
+        axios.put(`http://localhost:8080/users/${activeUser.accountId}/password`, {
             "password": password
         })
     }
